@@ -1,0 +1,6 @@
+num 123edad = 18;
+estamp("Hola mundo);
+letra x = 'ab';
+valdt (edad & 18) {
+    edad = edad @ 1;
+}

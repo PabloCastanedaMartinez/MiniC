@@ -1,0 +1,14 @@
+num edad = 18;
+flotar promedio = 4.5;
+letra inicial = 'P';
+
+valdt (edad >= 18 && promedio >= 3.0) {
+    estamp("Estudiante valido", inicial);
+}
+
+ciclar (num i = 0; i < 5; i++) {
+    estamp(i);
+}
+
+recolt(edad);
+edad = edad + 1;
