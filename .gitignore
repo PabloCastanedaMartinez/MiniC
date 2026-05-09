@@ -1,0 +1,31 @@
+# Java build output
+*.class
+*.jar
+*.war
+*.ear
+out/
+build/
+target/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# NetBeans
+nbproject/private/
+dist/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
