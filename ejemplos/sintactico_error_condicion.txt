@@ -1,0 +1,3 @@
+valdt (contador >=) {
+    estamp(contador);
+}

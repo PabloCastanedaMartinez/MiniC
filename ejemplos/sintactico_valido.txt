@@ -1,0 +1,16 @@
+num contador;
+num total = 10;
+flotar precio = 12.5;
+letra inicial = 'A';
+
+contador = contador + 1;
+
+valdt (contador >= 10) {
+    estamp(contador);
+}
+
+ciclar (num i = 0; i < 10; i++) {
+    estamp(i);
+}
+
+recolt(contador);
