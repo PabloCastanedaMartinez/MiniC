@@ -4,7 +4,7 @@ Esta fase recibe como entrada el AST validado por el analizador semantico y la t
 
 ## Representacion intermedia TAC
 
-El compilador genera codigo de tres direcciones con instrucciones `minic.ir.InstruccionTAC`:
+El compilador genera codigo de tres direcciones con instrucciones `bipre.ir.InstruccionTAC`:
 
 ```text
 resultado = argumento1 operador argumento2
@@ -117,7 +117,7 @@ javac -d out src\*.java
 Ejecutar un ejemplo:
 
 ```powershell
-java -cp out minic.app.Main ejemplos\codigo_subexpresion_comun.txt
+java -cp out bipre.app.Main ejemplos\codigo_subexpresion_comun.txt
 ```
 
 Casos incluidos:

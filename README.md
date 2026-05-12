@@ -8,50 +8,50 @@ No ejecuta el programa fuente ni genera codigo maquina real de una arquitectura 
 
 ```txt
 src/
-  minic.frontend.lex.AnalizadorLexico.java
-  minic.frontend.semantics.AnalizadorSemantico.java
-  minic.analysis.AnalisisVariablesVivas.java
-  minic.frontend.semantics.AdvertenciaSemantica.java
-  minic.frontend.symbols.Ambito.java
-  minic.frontend.ast.ArbolAbstracto.java
-  minic.frontend.parse.ArbolConcreto.java
-  minic.cfg.BloqueBasico.java
-  minic.ir.CodigoIntermedio.java
-  minic.codegen.CodigoObjeto.java
-  minic.cfg.ConstructorBloquesBasicos.java
-  minic.cfg.ConstructorCFG.java
-  minic.gda.ConstructorGDA.java
-  minic.frontend.lex.ErrorLexico.java
-  minic.codegen.ErrorGeneracionCodigo.java
-  minic.frontend.semantics.ErrorSemantico.java
-  minic.frontend.parse.ErrorSintactico.java
-  minic.util.ExportadorDot.java
-  minic.gda.GDA.java
-  minic.ir.GeneradorCodigoIntermedio.java
-  minic.codegen.GeneradorCodigoObjeto.java
-  minic.ir.GeneradorEtiquetas.java
-  minic.ir.GeneradorTemporales.java
-  minic.cfg.GrafoFlujoControl.java
-  minic.codegen.InstruccionObjeto.java
-  minic.ir.InstruccionTAC.java
-  minic.app.Main.java
-  minic.frontend.ast.NodoAST.java
-  minic.frontend.parse.NodoArbol.java
-  minic.gda.NodoGDA.java
-  minic.ir.OperadorTAC.java
-  minic.analysis.OptimizadorCodigoIntermedio.java
-  minic.frontend.parse.Parser.java
-  minic.pipeline.PipelineCompilacion.java
-  minic.frontend.semantics.ReglasTipo.java
-  minic.pipeline.ResultadoCompilacion.java
-  minic.analysis.ResultadoOptimizacion.java
-  minic.frontend.symbols.Simbolo.java
-  minic.frontend.symbols.TablaSimbolos.java
-  minic.frontend.semantics.TipoDato.java
-  minic.frontend.lex.Token.java
-  minic.frontend.lex.TokenType.java
-  minic.frontend.ast.VisitadorAST.java
-  minic.util.VisualizadorArbol.java
+  bipre.frontend.lex.AnalizadorLexico.java
+  bipre.frontend.semantics.AnalizadorSemantico.java
+  bipre.analysis.AnalisisVariablesVivas.java
+  bipre.frontend.semantics.AdvertenciaSemantica.java
+  bipre.frontend.symbols.Ambito.java
+  bipre.frontend.ast.ArbolAbstracto.java
+  bipre.frontend.parse.ArbolConcreto.java
+  bipre.cfg.BloqueBasico.java
+  bipre.ir.CodigoIntermedio.java
+  bipre.codegen.CodigoObjeto.java
+  bipre.cfg.ConstructorBloquesBasicos.java
+  bipre.cfg.ConstructorCFG.java
+  bipre.gda.ConstructorGDA.java
+  bipre.frontend.lex.ErrorLexico.java
+  bipre.codegen.ErrorGeneracionCodigo.java
+  bipre.frontend.semantics.ErrorSemantico.java
+  bipre.frontend.parse.ErrorSintactico.java
+  bipre.util.ExportadorDot.java
+  bipre.gda.GDA.java
+  bipre.ir.GeneradorCodigoIntermedio.java
+  bipre.codegen.GeneradorCodigoObjeto.java
+  bipre.ir.GeneradorEtiquetas.java
+  bipre.ir.GeneradorTemporales.java
+  bipre.cfg.GrafoFlujoControl.java
+  bipre.codegen.InstruccionObjeto.java
+  bipre.ir.InstruccionTAC.java
+  bipre.app.Main.java
+  bipre.frontend.ast.NodoAST.java
+  bipre.frontend.parse.NodoArbol.java
+  bipre.gda.NodoGDA.java
+  bipre.ir.OperadorTAC.java
+  bipre.analysis.OptimizadorCodigoIntermedio.java
+  bipre.frontend.parse.Parser.java
+  bipre.pipeline.PipelineCompilacion.java
+  bipre.frontend.semantics.ReglasTipo.java
+  bipre.pipeline.ResultadoCompilacion.java
+  bipre.analysis.ResultadoOptimizacion.java
+  bipre.frontend.symbols.Simbolo.java
+  bipre.frontend.symbols.TablaSimbolos.java
+  bipre.frontend.semantics.TipoDato.java
+  bipre.frontend.lex.Token.java
+  bipre.frontend.lex.TokenType.java
+  bipre.frontend.ast.VisitadorAST.java
+  bipre.util.VisualizadorArbol.java
 
 ejemplos/
   valido.txt
@@ -78,27 +78,27 @@ docs/
 
 Archivos principales:
 
-- `minic.frontend.lex.TokenType.java`: enum con todos los tipos de token reconocidos.
-- `minic.frontend.lex.Token.java`: representa un token reconocido, con tipo, lexema, atributo, linea y columna.
-- `minic.frontend.lex.ErrorLexico.java`: representa un error lexico, con lexema, linea, columna y descripcion.
-- `minic.frontend.lex.AnalizadorLexico.java`: contiene la logica del lexer.
-- `minic.frontend.parse.Parser.java`: consume tokens y valida la gramatica del lenguaje.
-- `minic.frontend.semantics.AnalizadorSemantico.java`: recorre el AST, valida tipos, ambitos, usos e inicializacion.
-- `minic.frontend.symbols.TablaSimbolos.java`, `minic.frontend.symbols.Ambito.java` y `minic.frontend.symbols.Simbolo.java`: representan los identificadores declarados.
-- `minic.frontend.semantics.ReglasTipo.java` y `minic.frontend.semantics.TipoDato.java`: concentran las reglas de compatibilidad fuerte.
-- `minic.frontend.parse.NodoArbol.java` y `minic.frontend.ast.NodoAST.java`: nodos para el arbol concreto y el AST.
-- `minic.util.VisualizadorArbol.java`: exporta los arboles a `.dot` y `.png`.
-- `minic.ir.GeneradorCodigoIntermedio.java`: traduce el AST validado a TAC.
-- `minic.cfg.ConstructorBloquesBasicos.java` y `minic.cfg.ConstructorCFG.java`: dividen TAC en bloques y construyen el CFG.
-- `minic.gda.ConstructorGDA.java`: construye GDA por bloque basico.
-- `minic.analysis.AnalisisVariablesVivas.java`: calcula `use`, `def`, `in` y `out`.
-- `minic.analysis.OptimizadorCodigoIntermedio.java`: aplica optimizaciones locales y eliminacion de codigo muerto.
-- `minic.codegen.GeneradorCodigoObjeto.java`: genera ensamblador simbolico educativo.
-- `minic.pipeline.PipelineCompilacion.java`: coordina generacion, analisis, optimizacion y codigo objeto.
+- `bipre.frontend.lex.TokenType.java`: enum con todos los tipos de token reconocidos.
+- `bipre.frontend.lex.Token.java`: representa un token reconocido, con tipo, lexema, atributo, linea y columna.
+- `bipre.frontend.lex.ErrorLexico.java`: representa un error lexico, con lexema, linea, columna y descripcion.
+- `bipre.frontend.lex.AnalizadorLexico.java`: contiene la logica del lexer.
+- `bipre.frontend.parse.Parser.java`: consume tokens y valida la gramatica del lenguaje.
+- `bipre.frontend.semantics.AnalizadorSemantico.java`: recorre el AST, valida tipos, ambitos, usos e inicializacion.
+- `bipre.frontend.symbols.TablaSimbolos.java`, `bipre.frontend.symbols.Ambito.java` y `bipre.frontend.symbols.Simbolo.java`: representan los identificadores declarados.
+- `bipre.frontend.semantics.ReglasTipo.java` y `bipre.frontend.semantics.TipoDato.java`: concentran las reglas de compatibilidad fuerte.
+- `bipre.frontend.parse.NodoArbol.java` y `bipre.frontend.ast.NodoAST.java`: nodos para el arbol concreto y el AST.
+- `bipre.util.VisualizadorArbol.java`: exporta los arboles a `.dot` y `.png`.
+- `bipre.ir.GeneradorCodigoIntermedio.java`: traduce el AST validado a TAC.
+- `bipre.cfg.ConstructorBloquesBasicos.java` y `bipre.cfg.ConstructorCFG.java`: dividen TAC en bloques y construyen el CFG.
+- `bipre.gda.ConstructorGDA.java`: construye GDA por bloque basico.
+- `bipre.analysis.AnalisisVariablesVivas.java`: calcula `use`, `def`, `in` y `out`.
+- `bipre.analysis.OptimizadorCodigoIntermedio.java`: aplica optimizaciones locales y eliminacion de codigo muerto.
+- `bipre.codegen.GeneradorCodigoObjeto.java`: genera ensamblador simbolico educativo.
+- `bipre.pipeline.PipelineCompilacion.java`: coordina generacion, analisis, optimizacion y codigo objeto.
 - `docs/SintaxisBNF.md`: gramatica BNF y decisiones de ambiguedad.
 - `docs/AnalisisSemantico.md`: reglas semanticas, gramatica de atributos y decisiones.
 - `docs/GeneracionCodigo.md`: reglas de TAC, bloques, CFG, GDA, optimizacion y codigo objeto.
-- `minic.app.Main.java`: clase principal para probar el analizador desde consola.
+- `bipre.app.Main.java`: clase principal para probar el analizador desde consola.
 
 ## Requisitos
 
@@ -138,52 +138,52 @@ El programa recibe como primer argumento la ruta de un archivo de texto con codi
 Ejemplo con una entrada valida:
 
 ```powershell
-java -cp out minic.app.Main ejemplos\valido.txt
+java -cp out bipre.app.Main ejemplos\valido.txt
 ```
 
 Ejemplo con una entrada sintacticamente valida:
 
 ```powershell
-java -cp out minic.app.Main ejemplos\sintactico_valido.txt
+java -cp out bipre.app.Main ejemplos\sintactico_valido.txt
 ```
 
 Ejemplo con una entrada que contiene errores lexicos:
 
 ```powershell
-java -cp out minic.app.Main ejemplos\errores.txt
+java -cp out bipre.app.Main ejemplos\errores.txt
 ```
 
 Ejemplos con errores sintacticos:
 
 ```powershell
-java -cp out minic.app.Main ejemplos\sintactico_error_punto_coma.txt
-java -cp out minic.app.Main ejemplos\sintactico_error_condicion.txt
+java -cp out bipre.app.Main ejemplos\sintactico_error_punto_coma.txt
+java -cp out bipre.app.Main ejemplos\sintactico_error_condicion.txt
 ```
 
 Ejemplos para la fase semantica:
 
 ```powershell
-java -cp out minic.app.Main ejemplos\semantico_valido.txt
-java -cp out minic.app.Main ejemplos\semantico_errores.txt
+java -cp out bipre.app.Main ejemplos\semantico_valido.txt
+java -cp out bipre.app.Main ejemplos\semantico_errores.txt
 ```
 
 Ejemplos para generacion y optimizacion de codigo:
 
 ```powershell
-java -cp out minic.app.Main ejemplos\codigo_asignacion_simple.txt
-java -cp out minic.app.Main ejemplos\codigo_expresion_aritmetica.txt
-java -cp out minic.app.Main ejemplos\codigo_subexpresion_comun.txt
-java -cp out minic.app.Main ejemplos\codigo_plegamiento_constantes.txt
-java -cp out minic.app.Main ejemplos\codigo_propagacion_copias.txt
-java -cp out minic.app.Main ejemplos\codigo_condicional.txt
-java -cp out minic.app.Main ejemplos\codigo_ciclo.txt
-java -cp out minic.app.Main ejemplos\codigo_muerto.txt
+java -cp out bipre.app.Main ejemplos\codigo_asignacion_simple.txt
+java -cp out bipre.app.Main ejemplos\codigo_expresion_aritmetica.txt
+java -cp out bipre.app.Main ejemplos\codigo_subexpresion_comun.txt
+java -cp out bipre.app.Main ejemplos\codigo_plegamiento_constantes.txt
+java -cp out bipre.app.Main ejemplos\codigo_propagacion_copias.txt
+java -cp out bipre.app.Main ejemplos\codigo_condicional.txt
+java -cp out bipre.app.Main ejemplos\codigo_ciclo.txt
+java -cp out bipre.app.Main ejemplos\codigo_muerto.txt
 ```
 
 Tambien puedes pasar cualquier archivo `.txt` propio:
 
 ```powershell
-java -cp out minic.app.Main ruta\al\archivo.txt
+java -cp out bipre.app.Main ruta\al\archivo.txt
 ```
 
 El archivo se lee usando UTF-8.
@@ -193,10 +193,10 @@ El archivo se lee usando UTF-8.
 Si ejecutas el programa sin argumentos:
 
 ```powershell
-java -cp out minic.app.Main
+java -cp out bipre.app.Main
 ```
 
-no se utiliza ningun archivo por defecto. En ese caso, `minic.app.Main` analiza una cadena interna definida en el metodo `ejemploDeEntrada()` de `src/minic/app/Main.java`.
+no se utiliza ningun archivo por defecto. En ese caso, `bipre.app.Main` analiza una cadena interna definida en el metodo `ejemploDeEntrada()` de `src/bipre/app/Main.java`.
 
 El programa mostrara:
 
@@ -231,18 +231,18 @@ que la UI se implemento con Swing para no agregar dependencias externas.
 Despues de compilar el proyecto:
 
 ```powershell
-java -cp out minic.ui.MainUI
+java -cp out bipre.ui.MainUI
 ```
 
 La ventana permite escribir codigo fuente, presionar `Compilar`, ver el estado
 de las fases y revisar la salida final producida por `estamp(...)` cuando no hay
-errores. La UI usa `minic.ui.service.ServicioCompilacion`, que coordina:
+errores. La UI usa `bipre.ui.service.ServicioCompilacion`, que coordina:
 
 1. analisis lexico con `AnalizadorLexico`;
 2. analisis sintactico con `Parser`;
 3. analisis semantico con `AnalizadorSemantico`;
 4. generacion y optimizacion con `PipelineCompilacion`;
-5. simulacion del resultado con `minic.runtime.SimuladorPrograma`.
+5. simulacion del resultado con `bipre.runtime.SimuladorPrograma`.
 
 La simulacion se ejecuta sobre el AST ya validado y cubre declaraciones,
 asignaciones, expresiones aritmeticas y relacionales, `valdt`, `ciclar`,
@@ -263,10 +263,10 @@ ejemplos/ui_error_semantico.txt
 Puedes cargarlos manualmente en la UI o verificar el mismo servicio por consola:
 
 ```powershell
-java -cp out minic.ui.PruebaServicioCompilacion ejemplos\ui_valido.txt
-java -cp out minic.ui.PruebaServicioCompilacion ejemplos\ui_error_lexico.txt
-java -cp out minic.ui.PruebaServicioCompilacion ejemplos\ui_error_sintactico.txt
-java -cp out minic.ui.PruebaServicioCompilacion ejemplos\ui_error_semantico.txt
+java -cp out bipre.ui.PruebaServicioCompilacion ejemplos\ui_valido.txt
+java -cp out bipre.ui.PruebaServicioCompilacion ejemplos\ui_error_lexico.txt
+java -cp out bipre.ui.PruebaServicioCompilacion ejemplos\ui_error_sintactico.txt
+java -cp out bipre.ui.PruebaServicioCompilacion ejemplos\ui_error_semantico.txt
 ```
 
 El caso valido produce una salida como:
@@ -288,12 +288,12 @@ El caso valido produce una salida como:
 
 ## Usar el analizador desde codigo Java
 
-Tambien puedes usar el lexer directamente desde otra clase Java, sin pasar por `minic.app.Main`:
+Tambien puedes usar el lexer directamente desde otra clase Java, sin pasar por `bipre.app.Main`:
 
 ```java
-import minic.frontend.lex.AnalizadorLexico;
-import minic.frontend.lex.ErrorLexico;
-import minic.frontend.lex.Token;
+import bipre.frontend.lex.AnalizadorLexico;
+import bipre.frontend.lex.ErrorLexico;
+import bipre.frontend.lex.Token;
 
 String codigo = "num edad = 18;";
 
@@ -306,7 +306,7 @@ List<ErrorLexico> errores = lexer.getErrores();
 
 ## Salida del programa
 
-Al ejecutar `minic.app.Main`, la salida se divide en estas partes:
+Al ejecutar `bipre.app.Main`, la salida se divide en estas partes:
 
 1. Lista de tokens reconocidos.
 2. Lista de errores lexicos encontrados.

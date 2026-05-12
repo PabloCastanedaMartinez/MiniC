@@ -1,0 +1,3 @@
+flotar precio;
+recolt(precio);
+estamp("El precio es:", precio);

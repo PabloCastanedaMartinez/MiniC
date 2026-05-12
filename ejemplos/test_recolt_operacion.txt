@@ -1,0 +1,5 @@
+num a;
+num b;
+recolt(a);
+recolt(b);
+estamp("La suma es:", a + b);

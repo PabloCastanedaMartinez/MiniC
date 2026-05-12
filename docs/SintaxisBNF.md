@@ -1,6 +1,6 @@
 # Analisis sintactico: BNF y decisiones
 
-Este documento define la sintaxis aceptada por `minic.frontend.parse.Parser.java`. La fuente de verdad
+Este documento define la sintaxis aceptada por `bipre.frontend.parse.Parser.java`. La fuente de verdad
 para los lexemas sigue siendo `TablaTokens.md` y el lexer existente.
 
 ## Nota sobre `flotar`

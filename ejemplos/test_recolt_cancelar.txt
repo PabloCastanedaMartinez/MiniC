@@ -1,0 +1,3 @@
+num x;
+recolt(x);
+estamp("No deberias ver esto si cancelas");

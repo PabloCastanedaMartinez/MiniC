@@ -1,0 +1,3 @@
+letra inicial;
+recolt(inicial);
+estamp("Tu inicial es:", inicial);

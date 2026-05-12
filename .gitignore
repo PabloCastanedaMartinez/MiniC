@@ -31,5 +31,6 @@ Thumbs.db
 desktop.ini
 
 # Project-specific files
+output/
 *.dot
 *.png

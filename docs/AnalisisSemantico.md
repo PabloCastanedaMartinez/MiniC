@@ -1,6 +1,6 @@
 # Analisis semantico: reglas, atributos y decisiones
 
-Esta fase consume el AST producido por `minic.frontend.parse.Parser.java`. No vuelve a ejecutar el
+Esta fase consume el AST producido por `bipre.frontend.parse.Parser.java`. No vuelve a ejecutar el
 lexer ni el parser, no ejecuta el programa fuente y no genera codigo.
 
 ## Tipos del lenguaje
@@ -164,11 +164,11 @@ Advertencia implementada:
 Caso valido:
 
 ```powershell
-java -cp out minic.app.Main ejemplos\semantico_valido.txt
+java -cp out bipre.app.Main ejemplos\semantico_valido.txt
 ```
 
 Caso invalido:
 
 ```powershell
-java -cp out minic.app.Main ejemplos\semantico_errores.txt
+java -cp out bipre.app.Main ejemplos\semantico_errores.txt
 ```

@@ -1,0 +1,3 @@
+num edad;
+recolt(edad);
+estamp("Tu edad es:", edad);
