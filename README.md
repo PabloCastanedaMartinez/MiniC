@@ -8,50 +8,50 @@ No ejecuta el programa fuente ni genera codigo maquina real de una arquitectura 
 
 ```txt
 src/
-  AnalizadorLexico.java
-  AnalizadorSemantico.java
-  AnalisisVariablesVivas.java
-  AdvertenciaSemantica.java
-  Ambito.java
-  ArbolAbstracto.java
-  ArbolConcreto.java
-  BloqueBasico.java
-  CodigoIntermedio.java
-  CodigoObjeto.java
-  ConstructorBloquesBasicos.java
-  ConstructorCFG.java
-  ConstructorGDA.java
-  ErrorLexico.java
-  ErrorGeneracionCodigo.java
-  ErrorSemantico.java
-  ErrorSintactico.java
-  ExportadorDot.java
-  GDA.java
-  GeneradorCodigoIntermedio.java
-  GeneradorCodigoObjeto.java
-  GeneradorEtiquetas.java
-  GeneradorTemporales.java
-  GrafoFlujoControl.java
-  InstruccionObjeto.java
-  InstruccionTAC.java
-  Main.java
-  NodoAST.java
-  NodoArbol.java
-  NodoGDA.java
-  OperadorTAC.java
-  OptimizadorCodigoIntermedio.java
-  Parser.java
-  PipelineCompilacion.java
-  ReglasTipo.java
-  ResultadoCompilacion.java
-  ResultadoOptimizacion.java
-  Simbolo.java
-  TablaSimbolos.java
-  TipoDato.java
-  Token.java
-  TokenType.java
-  VisitadorAST.java
-  VisualizadorArbol.java
+  minic.frontend.lex.AnalizadorLexico.java
+  minic.frontend.semantics.AnalizadorSemantico.java
+  minic.analysis.AnalisisVariablesVivas.java
+  minic.frontend.semantics.AdvertenciaSemantica.java
+  minic.frontend.symbols.Ambito.java
+  minic.frontend.ast.ArbolAbstracto.java
+  minic.frontend.parse.ArbolConcreto.java
+  minic.cfg.BloqueBasico.java
+  minic.ir.CodigoIntermedio.java
+  minic.codegen.CodigoObjeto.java
+  minic.cfg.ConstructorBloquesBasicos.java
+  minic.cfg.ConstructorCFG.java
+  minic.gda.ConstructorGDA.java
+  minic.frontend.lex.ErrorLexico.java
+  minic.codegen.ErrorGeneracionCodigo.java
+  minic.frontend.semantics.ErrorSemantico.java
+  minic.frontend.parse.ErrorSintactico.java
+  minic.util.ExportadorDot.java
+  minic.gda.GDA.java
+  minic.ir.GeneradorCodigoIntermedio.java
+  minic.codegen.GeneradorCodigoObjeto.java
+  minic.ir.GeneradorEtiquetas.java
+  minic.ir.GeneradorTemporales.java
+  minic.cfg.GrafoFlujoControl.java
+  minic.codegen.InstruccionObjeto.java
+  minic.ir.InstruccionTAC.java
+  minic.app.Main.java
+  minic.frontend.ast.NodoAST.java
+  minic.frontend.parse.NodoArbol.java
+  minic.gda.NodoGDA.java
+  minic.ir.OperadorTAC.java
+  minic.analysis.OptimizadorCodigoIntermedio.java
+  minic.frontend.parse.Parser.java
+  minic.pipeline.PipelineCompilacion.java
+  minic.frontend.semantics.ReglasTipo.java
+  minic.pipeline.ResultadoCompilacion.java
+  minic.analysis.ResultadoOptimizacion.java
+  minic.frontend.symbols.Simbolo.java
+  minic.frontend.symbols.TablaSimbolos.java
+  minic.frontend.semantics.TipoDato.java
+  minic.frontend.lex.Token.java
+  minic.frontend.lex.TokenType.java
+  minic.frontend.ast.VisitadorAST.java
+  minic.util.VisualizadorArbol.java
 
 ejemplos/
   valido.txt
@@ -78,27 +78,27 @@ docs/
 
 Archivos principales:
 
-- `TokenType.java`: enum con todos los tipos de token reconocidos.
-- `Token.java`: representa un token reconocido, con tipo, lexema, atributo, linea y columna.
-- `ErrorLexico.java`: representa un error lexico, con lexema, linea, columna y descripcion.
-- `AnalizadorLexico.java`: contiene la logica del lexer.
-- `Parser.java`: consume tokens y valida la gramatica del lenguaje.
-- `AnalizadorSemantico.java`: recorre el AST, valida tipos, ambitos, usos e inicializacion.
-- `TablaSimbolos.java`, `Ambito.java` y `Simbolo.java`: representan los identificadores declarados.
-- `ReglasTipo.java` y `TipoDato.java`: concentran las reglas de compatibilidad fuerte.
-- `NodoArbol.java` y `NodoAST.java`: nodos para el arbol concreto y el AST.
-- `VisualizadorArbol.java`: exporta los arboles a `.dot` y `.png`.
-- `GeneradorCodigoIntermedio.java`: traduce el AST validado a TAC.
-- `ConstructorBloquesBasicos.java` y `ConstructorCFG.java`: dividen TAC en bloques y construyen el CFG.
-- `ConstructorGDA.java`: construye GDA por bloque basico.
-- `AnalisisVariablesVivas.java`: calcula `use`, `def`, `in` y `out`.
-- `OptimizadorCodigoIntermedio.java`: aplica optimizaciones locales y eliminacion de codigo muerto.
-- `GeneradorCodigoObjeto.java`: genera ensamblador simbolico educativo.
-- `PipelineCompilacion.java`: coordina generacion, analisis, optimizacion y codigo objeto.
+- `minic.frontend.lex.TokenType.java`: enum con todos los tipos de token reconocidos.
+- `minic.frontend.lex.Token.java`: representa un token reconocido, con tipo, lexema, atributo, linea y columna.
+- `minic.frontend.lex.ErrorLexico.java`: representa un error lexico, con lexema, linea, columna y descripcion.
+- `minic.frontend.lex.AnalizadorLexico.java`: contiene la logica del lexer.
+- `minic.frontend.parse.Parser.java`: consume tokens y valida la gramatica del lenguaje.
+- `minic.frontend.semantics.AnalizadorSemantico.java`: recorre el AST, valida tipos, ambitos, usos e inicializacion.
+- `minic.frontend.symbols.TablaSimbolos.java`, `minic.frontend.symbols.Ambito.java` y `minic.frontend.symbols.Simbolo.java`: representan los identificadores declarados.
+- `minic.frontend.semantics.ReglasTipo.java` y `minic.frontend.semantics.TipoDato.java`: concentran las reglas de compatibilidad fuerte.
+- `minic.frontend.parse.NodoArbol.java` y `minic.frontend.ast.NodoAST.java`: nodos para el arbol concreto y el AST.
+- `minic.util.VisualizadorArbol.java`: exporta los arboles a `.dot` y `.png`.
+- `minic.ir.GeneradorCodigoIntermedio.java`: traduce el AST validado a TAC.
+- `minic.cfg.ConstructorBloquesBasicos.java` y `minic.cfg.ConstructorCFG.java`: dividen TAC en bloques y construyen el CFG.
+- `minic.gda.ConstructorGDA.java`: construye GDA por bloque basico.
+- `minic.analysis.AnalisisVariablesVivas.java`: calcula `use`, `def`, `in` y `out`.
+- `minic.analysis.OptimizadorCodigoIntermedio.java`: aplica optimizaciones locales y eliminacion de codigo muerto.
+- `minic.codegen.GeneradorCodigoObjeto.java`: genera ensamblador simbolico educativo.
+- `minic.pipeline.PipelineCompilacion.java`: coordina generacion, analisis, optimizacion y codigo objeto.
 - `docs/SintaxisBNF.md`: gramatica BNF y decisiones de ambiguedad.
 - `docs/AnalisisSemantico.md`: reglas semanticas, gramatica de atributos y decisiones.
 - `docs/GeneracionCodigo.md`: reglas de TAC, bloques, CFG, GDA, optimizacion y codigo objeto.
-- `Main.java`: clase principal para probar el analizador desde consola.
+- `minic.app.Main.java`: clase principal para probar el analizador desde consola.
 
 ## Requisitos
 
@@ -117,11 +117,19 @@ javac -version
 Desde la raiz del proyecto:
 
 ```powershell
-mkdir out
-javac -d out src\*.java
+New-Item -ItemType Directory -Force out | Out-Null
+javac -d out (Get-ChildItem -Path src -Recurse -Filter *.java).FullName
 ```
 
 Esto compila las clases Java dentro del directorio `out`.
+
+Alternativa en `cmd.exe`:
+
+```bat
+if not exist out mkdir out
+dir /s /b src\*.java > sources.txt
+javac -d out @sources.txt
+```
 
 ## Ejecutar con un archivo de entrada
 
@@ -130,52 +138,52 @@ El programa recibe como primer argumento la ruta de un archivo de texto con codi
 Ejemplo con una entrada valida:
 
 ```powershell
-java -cp out Main ejemplos\valido.txt
+java -cp out minic.app.Main ejemplos\valido.txt
 ```
 
 Ejemplo con una entrada sintacticamente valida:
 
 ```powershell
-java -cp out Main ejemplos\sintactico_valido.txt
+java -cp out minic.app.Main ejemplos\sintactico_valido.txt
 ```
 
 Ejemplo con una entrada que contiene errores lexicos:
 
 ```powershell
-java -cp out Main ejemplos\errores.txt
+java -cp out minic.app.Main ejemplos\errores.txt
 ```
 
 Ejemplos con errores sintacticos:
 
 ```powershell
-java -cp out Main ejemplos\sintactico_error_punto_coma.txt
-java -cp out Main ejemplos\sintactico_error_condicion.txt
+java -cp out minic.app.Main ejemplos\sintactico_error_punto_coma.txt
+java -cp out minic.app.Main ejemplos\sintactico_error_condicion.txt
 ```
 
 Ejemplos para la fase semantica:
 
 ```powershell
-java -cp out Main ejemplos\semantico_valido.txt
-java -cp out Main ejemplos\semantico_errores.txt
+java -cp out minic.app.Main ejemplos\semantico_valido.txt
+java -cp out minic.app.Main ejemplos\semantico_errores.txt
 ```
 
 Ejemplos para generacion y optimizacion de codigo:
 
 ```powershell
-java -cp out Main ejemplos\codigo_asignacion_simple.txt
-java -cp out Main ejemplos\codigo_expresion_aritmetica.txt
-java -cp out Main ejemplos\codigo_subexpresion_comun.txt
-java -cp out Main ejemplos\codigo_plegamiento_constantes.txt
-java -cp out Main ejemplos\codigo_propagacion_copias.txt
-java -cp out Main ejemplos\codigo_condicional.txt
-java -cp out Main ejemplos\codigo_ciclo.txt
-java -cp out Main ejemplos\codigo_muerto.txt
+java -cp out minic.app.Main ejemplos\codigo_asignacion_simple.txt
+java -cp out minic.app.Main ejemplos\codigo_expresion_aritmetica.txt
+java -cp out minic.app.Main ejemplos\codigo_subexpresion_comun.txt
+java -cp out minic.app.Main ejemplos\codigo_plegamiento_constantes.txt
+java -cp out minic.app.Main ejemplos\codigo_propagacion_copias.txt
+java -cp out minic.app.Main ejemplos\codigo_condicional.txt
+java -cp out minic.app.Main ejemplos\codigo_ciclo.txt
+java -cp out minic.app.Main ejemplos\codigo_muerto.txt
 ```
 
 Tambien puedes pasar cualquier archivo `.txt` propio:
 
 ```powershell
-java -cp out Main ruta\al\archivo.txt
+java -cp out minic.app.Main ruta\al\archivo.txt
 ```
 
 El archivo se lee usando UTF-8.
@@ -185,10 +193,10 @@ El archivo se lee usando UTF-8.
 Si ejecutas el programa sin argumentos:
 
 ```powershell
-java -cp out Main
+java -cp out minic.app.Main
 ```
 
-no se utiliza ningun archivo por defecto. En ese caso, `Main` analiza una cadena interna definida en el metodo `ejemploDeEntrada()` de `src/Main.java`.
+no se utiliza ningun archivo por defecto. En ese caso, `minic.app.Main` analiza una cadena interna definida en el metodo `ejemploDeEntrada()` de `src/minic/app/Main.java`.
 
 El programa mostrara:
 
@@ -217,9 +225,13 @@ edad = edad + 1;
 
 ## Usar el analizador desde codigo Java
 
-Tambien puedes usar el lexer directamente desde otra clase Java, sin pasar por `Main`:
+Tambien puedes usar el lexer directamente desde otra clase Java, sin pasar por `minic.app.Main`:
 
 ```java
+import minic.frontend.lex.AnalizadorLexico;
+import minic.frontend.lex.ErrorLexico;
+import minic.frontend.lex.Token;
+
 String codigo = "num edad = 18;";
 
 AnalizadorLexico lexer = new AnalizadorLexico(codigo);
@@ -231,7 +243,7 @@ List<ErrorLexico> errores = lexer.getErrores();
 
 ## Salida del programa
 
-Al ejecutar `Main`, la salida se divide en estas partes:
+Al ejecutar `minic.app.Main`, la salida se divide en estas partes:
 
 1. Lista de tokens reconocidos.
 2. Lista de errores lexicos encontrados.
