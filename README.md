@@ -223,6 +223,69 @@ recolt(edad);
 edad = edad + 1;
 ```
 
+## Ejecutar la interfaz grafica
+
+El proyecto es Java puro y no incluye JavaFX ni otro framework grafico, por lo
+que la UI se implemento con Swing para no agregar dependencias externas.
+
+Despues de compilar el proyecto:
+
+```powershell
+java -cp out minic.ui.MainUI
+```
+
+La ventana permite escribir codigo fuente, presionar `Compilar`, ver el estado
+de las fases y revisar la salida final producida por `estamp(...)` cuando no hay
+errores. La UI usa `minic.ui.service.ServicioCompilacion`, que coordina:
+
+1. analisis lexico con `AnalizadorLexico`;
+2. analisis sintactico con `Parser`;
+3. analisis semantico con `AnalizadorSemantico`;
+4. generacion y optimizacion con `PipelineCompilacion`;
+5. simulacion del resultado con `minic.runtime.SimuladorPrograma`.
+
+La simulacion se ejecuta sobre el AST ya validado y cubre declaraciones,
+asignaciones, expresiones aritmeticas y relacionales, `valdt`, `ciclar`,
+incrementos/decrementos y `estamp(...)`. La entrada interactiva `recolt(...)`
+no se simula en la UI.
+
+## Casos de prueba para la UI
+
+Se agregaron estos archivos:
+
+```txt
+ejemplos/ui_valido.txt
+ejemplos/ui_error_lexico.txt
+ejemplos/ui_error_sintactico.txt
+ejemplos/ui_error_semantico.txt
+```
+
+Puedes cargarlos manualmente en la UI o verificar el mismo servicio por consola:
+
+```powershell
+java -cp out minic.ui.PruebaServicioCompilacion ejemplos\ui_valido.txt
+java -cp out minic.ui.PruebaServicioCompilacion ejemplos\ui_error_lexico.txt
+java -cp out minic.ui.PruebaServicioCompilacion ejemplos\ui_error_sintactico.txt
+java -cp out minic.ui.PruebaServicioCompilacion ejemplos\ui_error_semantico.txt
+```
+
+El caso valido produce una salida como:
+
+```txt
+10
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10.0 11
+```
+
 ## Usar el analizador desde codigo Java
 
 Tambien puedes usar el lexer directamente desde otra clase Java, sin pasar por `minic.app.Main`:

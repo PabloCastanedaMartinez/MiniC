@@ -1,0 +1,13 @@
+num contador = 10;
+flotar precio = 10;
+num total = 5 + 3 * 2;
+
+valdt (contador >= 10) {
+    estamp(contador);
+}
+
+ciclar (num i = 0; i < 10; i++) {
+    estamp(i);
+}
+
+estamp(precio, total);
