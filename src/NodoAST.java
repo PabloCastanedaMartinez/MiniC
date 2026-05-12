@@ -8,16 +8,24 @@ public final class NodoAST {
     private final int id;
     private final String nombre;
     private final String valor;
+    private final int linea;
+    private final int columna;
     private final List<NodoAST> hijos = new ArrayList<NodoAST>();
 
     public NodoAST(String nombre) {
-        this(nombre, null);
+        this(nombre, null, -1, -1);
     }
 
     public NodoAST(String nombre, String valor) {
+        this(nombre, valor, -1, -1);
+    }
+
+    public NodoAST(String nombre, String valor, int linea, int columna) {
         this.id = siguienteId++;
         this.nombre = nombre == null ? "" : nombre;
         this.valor = valor;
+        this.linea = linea;
+        this.columna = columna;
     }
 
     public int getId() {
@@ -30,6 +38,14 @@ public final class NodoAST {
 
     public String getValor() {
         return valor;
+    }
+
+    public int getLinea() {
+        return linea;
+    }
+
+    public int getColumna() {
+        return columna;
     }
 
     public String getEtiqueta() {

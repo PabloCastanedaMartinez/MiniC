@@ -103,6 +103,9 @@ public final class Parser {
             return parseDeclaracion(sentencia, true);
         }
         if (verifica(TokenType.ID)) {
+            if (verificaSiguiente(TokenType.OP_INC) || verificaSiguiente(TokenType.OP_DEC)) {
+                return parseIncrementoDecremento(sentencia, true);
+            }
             return parseAsignacion(sentencia, true);
         }
         if (verifica(TokenType.VALIDAR)) {
@@ -134,9 +137,10 @@ public final class Parser {
         Token tipo = consumirTipoDato(declaracion);
         Token id = consumir(declaracion, TokenType.ID, "ID", "se esperaba un identificador en la declaracion");
 
-        NodoAST ast = new NodoAST("DeclaracionVariable");
-        ast.agregarHijo(new NodoAST("tipo", tipo == null ? "<?>" : tipo.getLexema()));
-        ast.agregarHijo(new NodoAST("nombre", id == null ? "<?>" : id.getLexema()));
+        Token ubicacion = id != null ? id : tipo;
+        NodoAST ast = crearNodoAst("DeclaracionVariable", null, ubicacion);
+        ast.agregarHijo(crearNodoAst("tipo", tipo == null ? "<?>" : tipo.getLexema(), tipo));
+        ast.agregarHijo(crearNodoAst("nombre", id == null ? "<?>" : id.getLexema(), id));
 
         if (coincideLexema(TokenType.OP_ASIG, "=")) {
             agregarTerminal(declaracion, anterior());
@@ -156,8 +160,8 @@ public final class Parser {
         Token id = consumir(asignacion, TokenType.ID, "ID", "se esperaba un identificador al inicio de la asignacion");
         consumirLexema(asignacion, TokenType.OP_ASIG, "=", "=", "se esperaba '=' en la asignacion");
 
-        NodoAST ast = new NodoAST("Asignacion");
-        ast.agregarHijo(new NodoAST("nombre", id == null ? "<?>" : id.getLexema()));
+        NodoAST ast = crearNodoAst("Asignacion", null, id);
+        ast.agregarHijo(crearNodoAst("nombre", id == null ? "<?>" : id.getLexema(), id));
         NodoAST valor = new NodoAST("valor");
         valor.agregarHijo(parseExpresion(asignacion));
         ast.agregarHijo(valor);
@@ -168,12 +172,37 @@ public final class Parser {
         return ast;
     }
 
+    private NodoAST parseIncrementoDecremento(NodoArbol padre, boolean requierePuntoComa) {
+        NodoArbol actualizacion = agregarConcreto(padre, "Actualizacion");
+        Token id = consumir(actualizacion, TokenType.ID, "ID", "se esperaba identificador");
+
+        NodoAST ast;
+        if (coincide(TokenType.OP_INC)) {
+            agregarTerminal(actualizacion, anterior());
+            ast = crearNodoAst("Incremento", null, id);
+            ast.agregarHijo(crearNodoAst("nombre", id == null ? "<?>" : id.getLexema(), id));
+        } else if (coincide(TokenType.OP_DEC)) {
+            agregarTerminal(actualizacion, anterior());
+            ast = crearNodoAst("Decremento", null, id);
+            ast.agregarHijo(crearNodoAst("nombre", id == null ? "<?>" : id.getLexema(), id));
+        } else {
+            registrarError(ver(), "++ o --", "se esperaba incremento o decremento");
+            agregarConcreto(actualizacion, "ERROR: incremento o decremento incompleto");
+            ast = new NodoAST("ActualizacionInvalida");
+        }
+
+        if (requierePuntoComa) {
+            consumir(actualizacion, TokenType.PUNTO_COMA, ";", "falta ';' al final de la actualizacion");
+        }
+        return ast;
+    }
+
     private NodoAST parseCondicional(NodoArbol padre) {
         NodoArbol condicional = agregarConcreto(padre, "Condicional");
-        consumir(condicional, TokenType.VALIDAR, "valdt", "se esperaba 'valdt'");
+        Token tokenValdt = consumir(condicional, TokenType.VALIDAR, "valdt", "se esperaba 'valdt'");
         consumir(condicional, TokenType.PAREN_IZQ, "(", "se esperaba '(' despues de 'valdt'");
 
-        NodoAST ast = new NodoAST("Condicional");
+        NodoAST ast = crearNodoAst("Condicional", null, tokenValdt);
         NodoAST condicion = new NodoAST("condicion");
         condicion.agregarHijo(parseExpresion(condicional));
         ast.agregarHijo(condicion);
@@ -185,10 +214,10 @@ public final class Parser {
 
     private NodoAST parseCiclo(NodoArbol padre) {
         NodoArbol ciclo = agregarConcreto(padre, "Ciclo");
-        consumir(ciclo, TokenType.CICLO, "ciclar", "se esperaba 'ciclar'");
+        Token tokenCiclo = consumir(ciclo, TokenType.CICLO, "ciclar", "se esperaba 'ciclar'");
         consumir(ciclo, TokenType.PAREN_IZQ, "(", "se esperaba '(' despues de 'ciclar'");
 
-        NodoAST ast = new NodoAST("Ciclo");
+        NodoAST ast = crearNodoAst("Ciclo", null, tokenCiclo);
 
         NodoAST inicializacion = new NodoAST("inicializacion");
         inicializacion.agregarHijo(parseInicializacionCiclo(ciclo));
@@ -236,22 +265,22 @@ public final class Parser {
 
         if (coincide(TokenType.OP_INC)) {
             agregarTerminal(actualizacion, anterior());
-            NodoAST ast = new NodoAST("Incremento");
-            ast.agregarHijo(new NodoAST("nombre", id == null ? "<?>" : id.getLexema()));
+            NodoAST ast = crearNodoAst("Incremento", null, id);
+            ast.agregarHijo(crearNodoAst("nombre", id == null ? "<?>" : id.getLexema(), id));
             return ast;
         }
 
         if (coincide(TokenType.OP_DEC)) {
             agregarTerminal(actualizacion, anterior());
-            NodoAST ast = new NodoAST("Decremento");
-            ast.agregarHijo(new NodoAST("nombre", id == null ? "<?>" : id.getLexema()));
+            NodoAST ast = crearNodoAst("Decremento", null, id);
+            ast.agregarHijo(crearNodoAst("nombre", id == null ? "<?>" : id.getLexema(), id));
             return ast;
         }
 
         if (coincideLexema(TokenType.OP_ASIG, "=")) {
             agregarTerminal(actualizacion, anterior());
-            NodoAST ast = new NodoAST("Asignacion");
-            ast.agregarHijo(new NodoAST("nombre", id == null ? "<?>" : id.getLexema()));
+            NodoAST ast = crearNodoAst("Asignacion", null, id);
+            ast.agregarHijo(crearNodoAst("nombre", id == null ? "<?>" : id.getLexema(), id));
             NodoAST valor = new NodoAST("valor");
             valor.agregarHijo(parseExpresion(actualizacion));
             ast.agregarHijo(valor);
@@ -271,17 +300,17 @@ public final class Parser {
         consumir(entrada, TokenType.PAREN_DER, ")", "se esperaba ')' despues del identificador");
         consumir(entrada, TokenType.PUNTO_COMA, ";", "falta ';' al final de 'recolt'");
 
-        NodoAST ast = new NodoAST("Entrada");
-        ast.agregarHijo(new NodoAST("nombre", id == null ? "<?>" : id.getLexema()));
+        NodoAST ast = crearNodoAst("Entrada", null, id);
+        ast.agregarHijo(crearNodoAst("nombre", id == null ? "<?>" : id.getLexema(), id));
         return ast;
     }
 
     private NodoAST parseSalida(NodoArbol padre) {
         NodoArbol salida = agregarConcreto(padre, "Salida");
-        consumir(salida, TokenType.ESTAMPAR, "estamp", "se esperaba 'estamp'");
+        Token tokenEstamp = consumir(salida, TokenType.ESTAMPAR, "estamp", "se esperaba 'estamp'");
         consumir(salida, TokenType.PAREN_IZQ, "(", "se esperaba '(' despues de 'estamp'");
 
-        NodoAST ast = new NodoAST("Salida");
+        NodoAST ast = crearNodoAst("Salida", null, tokenEstamp);
         NodoAST argumentos = new NodoAST("argumentos");
         if (verifica(TokenType.PAREN_DER)) {
             registrarError(ver(), "argumento de salida", "'estamp' requiere al menos un argumento");
@@ -395,8 +424,8 @@ public final class Parser {
             Token operador = avanzar();
             agregarTerminal(nodo, operador);
             NodoAST operando = parseUnaria(nodo);
-            NodoAST ast = new NodoAST("OperacionUnaria");
-            ast.agregarHijo(new NodoAST("operador", operador.getLexema()));
+            NodoAST ast = crearNodoAst("OperacionUnaria", null, operador);
+            ast.agregarHijo(crearNodoAst("operador", operador.getLexema(), operador));
             ast.agregarHijo(operando);
             return ast;
         }
@@ -409,27 +438,27 @@ public final class Parser {
         if (coincide(TokenType.ID)) {
             Token token = anterior();
             agregarTerminal(primario, token);
-            return new NodoAST("Identificador", token.getLexema());
+            return crearNodoAst("Identificador", token.getLexema(), token);
         }
         if (coincide(TokenType.ENTERO_LITERAL)) {
             Token token = anterior();
             agregarTerminal(primario, token);
-            return new NodoAST("Entero", token.getLexema());
+            return crearNodoAst("Entero", token.getLexema(), token);
         }
         if (coincide(TokenType.FLOTANTE_LITERAL)) {
             Token token = anterior();
             agregarTerminal(primario, token);
-            return new NodoAST("Flotante", token.getLexema());
+            return crearNodoAst("Flotante", token.getLexema(), token);
         }
         if (coincide(TokenType.CARACTER_LITERAL)) {
             Token token = anterior();
             agregarTerminal(primario, token);
-            return new NodoAST("Caracter", token.getLexema());
+            return crearNodoAst("Caracter", token.getLexema(), token);
         }
         if (coincide(TokenType.CADENA_LITERAL)) {
             Token token = anterior();
             agregarTerminal(primario, token);
-            return new NodoAST("Cadena", token.getLexema());
+            return crearNodoAst("Cadena", token.getLexema(), token);
         }
         if (coincide(TokenType.PAREN_IZQ)) {
             agregarTerminal(primario, anterior());
@@ -449,8 +478,8 @@ public final class Parser {
     }
 
     private NodoAST operacionBinaria(Token operador, NodoAST izquierda, NodoAST derecha) {
-        NodoAST ast = new NodoAST("OperacionBinaria");
-        ast.agregarHijo(new NodoAST("operador", operador.getLexema()));
+        NodoAST ast = crearNodoAst("OperacionBinaria", null, operador);
+        ast.agregarHijo(crearNodoAst("operador", operador.getLexema(), operador));
         NodoAST nodoIzquierdo = new NodoAST("izquierdo");
         nodoIzquierdo.agregarHijo(izquierda);
         ast.agregarHijo(nodoIzquierdo);
@@ -514,6 +543,13 @@ public final class Parser {
 
     private boolean verifica(TokenType tipo) {
         return ver().getTipo() == tipo;
+    }
+
+    private boolean verificaSiguiente(TokenType tipo) {
+        if (actual + 1 >= tokens.size()) {
+            return false;
+        }
+        return tokens.get(actual + 1).getTipo() == tipo;
     }
 
     private boolean verificaLexema(TokenType tipo, String lexema) {
@@ -629,6 +665,18 @@ public final class Parser {
         }
         actualizarAst();
         return hijo;
+    }
+
+    private NodoAST crearNodoAst(String nombre, String valor, Token token) {
+        return new NodoAST(nombre, valor, linea(token), columna(token));
+    }
+
+    private int linea(Token token) {
+        return token == null ? -1 : token.getLinea();
+    }
+
+    private int columna(Token token) {
+        return token == null ? -1 : token.getColumna();
     }
 
     private String etiquetaTerminal(Token token) {

@@ -31,10 +31,17 @@ public final class Main {
         Parser parser = new Parser(tokens);
         parser.analizar();
 
+        AnalizadorSemantico semantico = null;
+        if (errores.isEmpty() && parser.getErrores().isEmpty()) {
+            semantico = new AnalizadorSemantico(parser.getArbolAbstracto().getRaiz());
+            semantico.analizar();
+        }
+
         imprimirSintactico(parser);
         imprimirArboles(parser);
         imprimirArchivosGenerados(parser);
-        imprimirResumen(tokens, errores, parser.getErrores());
+        imprimirSemantico(semantico, errores.isEmpty() && parser.getErrores().isEmpty());
+        imprimirResumen(tokens, errores, parser.getErrores(), semantico);
     }
 
     private static void imprimirTokens(List<Token> tokens) {
@@ -90,8 +97,47 @@ public final class Main {
         }
     }
 
+    private static void imprimirSemantico(AnalizadorSemantico semantico, boolean puedeEjecutarse) {
+        System.out.println();
+        System.out.println("ANALISIS SEMANTICO:");
+        if (!puedeEjecutarse || semantico == null) {
+            System.out.println("No ejecutado porque existen errores lexicos o sintacticos previos.");
+            return;
+        }
+
+        if (semantico.getErrores().isEmpty()) {
+            System.out.println("Correcto. No se encontraron errores semanticos.");
+        } else {
+            System.out.println("Se encontraron errores semanticos.");
+        }
+
+        System.out.println();
+        System.out.println("TABLA DE SIMBOLOS:");
+        System.out.print(semantico.getTablaSimbolos().comoTexto());
+
+        System.out.println();
+        System.out.println("ERRORES SEMANTICOS:");
+        if (semantico.getErrores().isEmpty()) {
+            System.out.println("No se encontraron errores semanticos.");
+        } else {
+            for (ErrorSemantico error : semantico.getErrores()) {
+                System.out.println(error);
+            }
+        }
+
+        System.out.println();
+        System.out.println("ADVERTENCIAS SEMANTICAS:");
+        if (semantico.getAdvertencias().isEmpty()) {
+            System.out.println("No se encontraron advertencias semanticas.");
+        } else {
+            for (AdvertenciaSemantica advertencia : semantico.getAdvertencias()) {
+                System.out.println(advertencia);
+            }
+        }
+    }
+
     private static void imprimirResumen(List<Token> tokens, List<ErrorLexico> erroresLexicos,
-            List<ErrorSintactico> erroresSintacticos) {
+            List<ErrorSintactico> erroresSintacticos, AnalizadorSemantico semantico) {
         System.out.println();
         if (erroresLexicos.isEmpty()) {
             System.out.println("Analisis lexico finalizado correctamente: no se encontraron errores lexicos.");
@@ -106,6 +152,15 @@ public final class Main {
             System.out.println("Analisis sintactico finalizado con errores: "
                     + erroresSintacticos.size()
                     + " errores sintacticos encontrados.");
+        }
+        if (semantico == null) {
+            System.out.println("Analisis semantico no ejecutado por errores previos.");
+        } else if (semantico.getErrores().isEmpty()) {
+            System.out.println("Analisis semantico finalizado correctamente: no se encontraron errores semanticos.");
+        } else {
+            System.out.println("Analisis semantico finalizado con errores: "
+                    + semantico.getErrores().size()
+                    + " errores semanticos encontrados.");
         }
         System.out.println("Tokens reconocidos: " + tokens.size());
     }

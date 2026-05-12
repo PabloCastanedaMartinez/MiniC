@@ -1,34 +1,46 @@
-# Analizador lexico y sintactico en Java
+# Analizador lexico, sintactico y semantico en Java
 
-Este proyecto implementa un analizador lexico manual y un analizador sintactico descendente recursivo para un lenguaje pequeno de estilo imperativo. El lexer reconoce palabras reservadas, identificadores, literales, operadores, delimitadores y errores lexicos segun la tabla de tokens definida para esta fase. El parser consume la lista de tokens producida por el lexer, valida la estructura sintactica y construye un arbol concreto y un AST.
+Este proyecto implementa un analizador lexico manual, un analizador sintactico descendente recursivo y un analizador semantico para un lenguaje pequeno de estilo imperativo. El lexer reconoce palabras reservadas, identificadores, literales, operadores, delimitadores y errores lexicos. El parser consume la lista de tokens producida por el lexer, valida la estructura sintactica y construye un arbol concreto y un AST. El analizador semantico consume ese AST, construye una tabla de simbolos con ambitos y aplica comprobacion fuerte de tipos mediante atributos.
 
-No incluye analisis semantico, generacion de codigo ni ejecucion del programa fuente.
+No incluye generacion de codigo ni ejecucion del programa fuente.
 
 ## Estructura del proyecto
 
 ```txt
 src/
   AnalizadorLexico.java
+  AnalizadorSemantico.java
+  AdvertenciaSemantica.java
+  Ambito.java
   ArbolAbstracto.java
   ArbolConcreto.java
   ErrorLexico.java
+  ErrorSemantico.java
   ErrorSintactico.java
   Main.java
   NodoAST.java
   NodoArbol.java
   Parser.java
+  ReglasTipo.java
+  Simbolo.java
+  TablaSimbolos.java
+  TipoDato.java
   Token.java
   TokenType.java
+  VisitadorAST.java
   VisualizadorArbol.java
 
 ejemplos/
   valido.txt
   errores.txt
+  semantico_valido.txt
+  semantico_errores.txt
   sintactico_valido.txt
   sintactico_error_punto_coma.txt
   sintactico_error_condicion.txt
 
 docs/
+  AnalisisSemantico.md
   SintaxisBNF.md
 ```
 
@@ -39,9 +51,13 @@ Archivos principales:
 - `ErrorLexico.java`: representa un error lexico, con lexema, linea, columna y descripcion.
 - `AnalizadorLexico.java`: contiene la logica del lexer.
 - `Parser.java`: consume tokens y valida la gramatica del lenguaje.
+- `AnalizadorSemantico.java`: recorre el AST, valida tipos, ambitos, usos e inicializacion.
+- `TablaSimbolos.java`, `Ambito.java` y `Simbolo.java`: representan los identificadores declarados.
+- `ReglasTipo.java` y `TipoDato.java`: concentran las reglas de compatibilidad fuerte.
 - `NodoArbol.java` y `NodoAST.java`: nodos para el arbol concreto y el AST.
 - `VisualizadorArbol.java`: exporta los arboles a `.dot` y `.png`.
 - `docs/SintaxisBNF.md`: gramatica BNF y decisiones de ambiguedad.
+- `docs/AnalisisSemantico.md`: reglas semanticas, gramatica de atributos y decisiones.
 - `Main.java`: clase principal para probar el analizador desde consola.
 
 ## Requisitos
@@ -94,6 +110,13 @@ Ejemplos con errores sintacticos:
 ```powershell
 java -cp out Main ejemplos\sintactico_error_punto_coma.txt
 java -cp out Main ejemplos\sintactico_error_condicion.txt
+```
+
+Ejemplos para la fase semantica:
+
+```powershell
+java -cp out Main ejemplos\semantico_valido.txt
+java -cp out Main ejemplos\semantico_errores.txt
 ```
 
 Tambien puedes pasar cualquier archivo `.txt` propio:
@@ -163,7 +186,10 @@ Al ejecutar `Main`, la salida se divide en estas partes:
 4. Arbol concreto en texto.
 5. AST en texto.
 6. Archivos graficos generados.
-7. Resumen final del analisis.
+7. Resultado del analisis semantico.
+8. Tabla de simbolos final.
+9. Errores y advertencias semanticas.
+10. Resumen final del analisis.
 
 Ejemplo de token:
 
@@ -182,6 +208,7 @@ Si no hay errores, se muestra:
 ```txt
 Analisis lexico finalizado correctamente: no se encontraron errores lexicos.
 Analisis sintactico finalizado correctamente: no se encontraron errores sintacticos.
+Analisis semantico finalizado correctamente: no se encontraron errores semanticos.
 ```
 
 Si hay errores, se muestra la cantidad encontrada:
@@ -189,6 +216,7 @@ Si hay errores, se muestra la cantidad encontrada:
 ```txt
 Analisis lexico finalizado con errores: 5 errores lexicos encontrados.
 Analisis sintactico finalizado con errores: 2 errores sintacticos encontrados.
+Analisis semantico finalizado con errores: 3 errores semanticos encontrados.
 ```
 
 El parser genera estos archivos en el directorio desde donde se ejecuta el programa:
@@ -259,3 +287,23 @@ El analizador registra errores sin detener todo el proceso. Entre los casos mane
 - Operadores incompletos como `!` sin `=`.
 
 Cada error incluye el lexema problemático, linea, columna y descripcion.
+
+## Analisis semantico
+
+La fase semantica solo se ejecuta si no hay errores lexicos ni sintacticos. Sus
+reglas principales son:
+
+- `num`, `flotar` y `letra` son tipos declarables.
+- `cadena` se usa para literales de cadena.
+- `booleano_interno` se usa solo como tipo sintetizado para condiciones.
+- Se permite promocion segura de `num` a `flotar`.
+- No se permite asignar `flotar` a `num`, ni mezclar `letra` o `cadena` con
+  operadores aritmeticos.
+- `&&` y `||` solo aceptan operandos `booleano_interno`.
+- `valdt` y la condicion de `ciclar` exigen `booleano_interno`.
+- `++` y `--` solo se permiten sobre variables numericas declaradas e
+  inicializadas.
+- Las variables declaradas y nunca usadas se reportan como advertencias.
+
+Consulta `docs/AnalisisSemantico.md` para las reglas completas y la gramatica de
+atributos aplicada sobre el AST.

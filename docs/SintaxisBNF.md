@@ -19,6 +19,7 @@ La tabla actual documenta que `flotar` se clasifica como `NUMERO` con atributo
 
 <sentencia> ::= <declaracion>
               | <asignacion>
+              | <actualizacion_sentencia>
               | <condicional>
               | <ciclo>
               | <entrada>
@@ -38,6 +39,9 @@ La tabla actual documenta que `flotar` se clasifica como `NUMERO` con atributo
 <asignacion> ::= ID "=" <expresion> ";"
 
 <asignacion_sin_punto_coma> ::= ID "=" <expresion>
+
+<actualizacion_sentencia> ::= ID "++" ";"
+                            | ID "--" ";"
 
 <condicional> ::= "valdt" "(" <condicion> ")" <bloque>
 
