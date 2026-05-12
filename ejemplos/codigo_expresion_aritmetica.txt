@@ -1,0 +1,5 @@
+num a = 2;
+num b = 3;
+num c = 4;
+num x = a + b * c;
+estamp(x);

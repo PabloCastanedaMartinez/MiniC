@@ -1,8 +1,8 @@
-# Analizador lexico, sintactico y semantico en Java
+# Compilador MiniC en Java
 
-Este proyecto implementa un analizador lexico manual, un analizador sintactico descendente recursivo y un analizador semantico para un lenguaje pequeno de estilo imperativo. El lexer reconoce palabras reservadas, identificadores, literales, operadores, delimitadores y errores lexicos. El parser consume la lista de tokens producida por el lexer, valida la estructura sintactica y construye un arbol concreto y un AST. El analizador semantico consume ese AST, construye una tabla de simbolos con ambitos y aplica comprobacion fuerte de tipos mediante atributos.
+Este proyecto implementa un compilador educativo por fases para un lenguaje pequeno de estilo imperativo. Incluye analizador lexico manual, parser descendente recursivo, analizador semantico con tabla de simbolos y tipos fuertes, generacion de codigo de tres direcciones, bloques basicos, CFG, GDA, analisis de variables vivas, optimizacion basica y codigo objeto simbolico.
 
-No incluye generacion de codigo ni ejecucion del programa fuente.
+No ejecuta el programa fuente ni genera codigo maquina real de una arquitectura fisica.
 
 ## Estructura del proyecto
 
@@ -10,18 +10,41 @@ No incluye generacion de codigo ni ejecucion del programa fuente.
 src/
   AnalizadorLexico.java
   AnalizadorSemantico.java
+  AnalisisVariablesVivas.java
   AdvertenciaSemantica.java
   Ambito.java
   ArbolAbstracto.java
   ArbolConcreto.java
+  BloqueBasico.java
+  CodigoIntermedio.java
+  CodigoObjeto.java
+  ConstructorBloquesBasicos.java
+  ConstructorCFG.java
+  ConstructorGDA.java
   ErrorLexico.java
+  ErrorGeneracionCodigo.java
   ErrorSemantico.java
   ErrorSintactico.java
+  ExportadorDot.java
+  GDA.java
+  GeneradorCodigoIntermedio.java
+  GeneradorCodigoObjeto.java
+  GeneradorEtiquetas.java
+  GeneradorTemporales.java
+  GrafoFlujoControl.java
+  InstruccionObjeto.java
+  InstruccionTAC.java
   Main.java
   NodoAST.java
   NodoArbol.java
+  NodoGDA.java
+  OperadorTAC.java
+  OptimizadorCodigoIntermedio.java
   Parser.java
+  PipelineCompilacion.java
   ReglasTipo.java
+  ResultadoCompilacion.java
+  ResultadoOptimizacion.java
   Simbolo.java
   TablaSimbolos.java
   TipoDato.java
@@ -35,12 +58,21 @@ ejemplos/
   errores.txt
   semantico_valido.txt
   semantico_errores.txt
+  codigo_asignacion_simple.txt
+  codigo_expresion_aritmetica.txt
+  codigo_subexpresion_comun.txt
+  codigo_plegamiento_constantes.txt
+  codigo_propagacion_copias.txt
+  codigo_condicional.txt
+  codigo_ciclo.txt
+  codigo_muerto.txt
   sintactico_valido.txt
   sintactico_error_punto_coma.txt
   sintactico_error_condicion.txt
 
 docs/
   AnalisisSemantico.md
+  GeneracionCodigo.md
   SintaxisBNF.md
 ```
 
@@ -56,8 +88,16 @@ Archivos principales:
 - `ReglasTipo.java` y `TipoDato.java`: concentran las reglas de compatibilidad fuerte.
 - `NodoArbol.java` y `NodoAST.java`: nodos para el arbol concreto y el AST.
 - `VisualizadorArbol.java`: exporta los arboles a `.dot` y `.png`.
+- `GeneradorCodigoIntermedio.java`: traduce el AST validado a TAC.
+- `ConstructorBloquesBasicos.java` y `ConstructorCFG.java`: dividen TAC en bloques y construyen el CFG.
+- `ConstructorGDA.java`: construye GDA por bloque basico.
+- `AnalisisVariablesVivas.java`: calcula `use`, `def`, `in` y `out`.
+- `OptimizadorCodigoIntermedio.java`: aplica optimizaciones locales y eliminacion de codigo muerto.
+- `GeneradorCodigoObjeto.java`: genera ensamblador simbolico educativo.
+- `PipelineCompilacion.java`: coordina generacion, analisis, optimizacion y codigo objeto.
 - `docs/SintaxisBNF.md`: gramatica BNF y decisiones de ambiguedad.
 - `docs/AnalisisSemantico.md`: reglas semanticas, gramatica de atributos y decisiones.
+- `docs/GeneracionCodigo.md`: reglas de TAC, bloques, CFG, GDA, optimizacion y codigo objeto.
 - `Main.java`: clase principal para probar el analizador desde consola.
 
 ## Requisitos
@@ -117,6 +157,19 @@ Ejemplos para la fase semantica:
 ```powershell
 java -cp out Main ejemplos\semantico_valido.txt
 java -cp out Main ejemplos\semantico_errores.txt
+```
+
+Ejemplos para generacion y optimizacion de codigo:
+
+```powershell
+java -cp out Main ejemplos\codigo_asignacion_simple.txt
+java -cp out Main ejemplos\codigo_expresion_aritmetica.txt
+java -cp out Main ejemplos\codigo_subexpresion_comun.txt
+java -cp out Main ejemplos\codigo_plegamiento_constantes.txt
+java -cp out Main ejemplos\codigo_propagacion_copias.txt
+java -cp out Main ejemplos\codigo_condicional.txt
+java -cp out Main ejemplos\codigo_ciclo.txt
+java -cp out Main ejemplos\codigo_muerto.txt
 ```
 
 Tambien puedes pasar cualquier archivo `.txt` propio:
@@ -189,7 +242,14 @@ Al ejecutar `Main`, la salida se divide en estas partes:
 7. Resultado del analisis semantico.
 8. Tabla de simbolos final.
 9. Errores y advertencias semanticas.
-10. Resumen final del analisis.
+10. Codigo de tres direcciones inicial.
+11. Bloques basicos y CFG.
+12. GDA por bloque.
+13. Analisis de variables vivas.
+14. Optimizaciones aplicadas.
+15. Codigo de tres direcciones optimizado.
+16. Codigo objeto final.
+17. Resumen final del analisis.
 
 Ejemplo de token:
 
@@ -209,6 +269,7 @@ Si no hay errores, se muestra:
 Analisis lexico finalizado correctamente: no se encontraron errores lexicos.
 Analisis sintactico finalizado correctamente: no se encontraron errores sintacticos.
 Analisis semantico finalizado correctamente: no se encontraron errores semanticos.
+Generacion y optimizacion de codigo finalizada correctamente.
 ```
 
 Si hay errores, se muestra la cantidad encontrada:
@@ -217,6 +278,7 @@ Si hay errores, se muestra la cantidad encontrada:
 Analisis lexico finalizado con errores: 5 errores lexicos encontrados.
 Analisis sintactico finalizado con errores: 2 errores sintacticos encontrados.
 Analisis semantico finalizado con errores: 3 errores semanticos encontrados.
+Generacion de codigo no ejecutada por errores previos.
 ```
 
 El parser genera estos archivos en el directorio desde donde se ejecuta el programa:
@@ -226,7 +288,13 @@ arbol_concreto.dot
 arbol_concreto.png
 ast.dot
 ast.png
+cfg.dot
+gda_B1.dot
+gda_B2.dot
 ```
+
+Si Graphviz esta disponible en `PATH`, tambien se generan `cfg.png` y los
+`gda_B*.png`.
 
 ## Tokens reconocidos
 
@@ -307,3 +375,21 @@ reglas principales son:
 
 Consulta `docs/AnalisisSemantico.md` para las reglas completas y la gramatica de
 atributos aplicada sobre el AST.
+
+## Generacion y optimizacion de codigo
+
+La fase de codigo solo se ejecuta si las fases lexico, sintactica y semantica no
+reportan errores. Sus pasos son:
+
+- Generar TAC desde el AST.
+- Dividir TAC en bloques basicos.
+- Construir CFG.
+- Construir GDA por bloque.
+- Calcular variables vivas.
+- Aplicar propagacion de copias, propagacion de constantes, plegamiento de
+  constantes, subexpresiones comunes locales, simplificacion algebraica,
+  eliminacion de codigo muerto y simplificacion de saltos.
+- Generar codigo objeto simbolico con instrucciones como `LOAD`, `STORE`,
+  `ADD`, `CMP_GE`, `JZ`, `JMP`, `PRINT` y `READ`.
+
+Consulta `docs/GeneracionCodigo.md` para las reglas completas y ejemplos.

@@ -1,0 +1,8 @@
+num a;
+num b;
+recolt(a);
+recolt(b);
+num x = a + b;
+num y = a + b;
+estamp(x);
+estamp(y);
